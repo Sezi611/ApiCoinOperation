@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Price Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+        .crypto {
+            font-size: 20px;
+            margin: 10px 0;
+        }
+        .refresh {
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .refresh:hover {
+            background-color: #0056b3;
+        }
+        .green-background {
+      background-color: green;
+      color: white;
+        }
+        .red-background {
+      background-color: red;
+      color: white;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Live Crypto Prices</h1>
+    <div class="container">
+        <div class="crypto" id="bitcoin">Bitcoin: Loading...</div>
+        <div class="crypto" id="ethereum">Ethereum: Loading...</div>
+        <div class="crypto" id="dogecoin">Dogecoin: Loading...</div>
+        <div class="crypto" id="cardano">Cardano: Loading...</div>
+        
+        <button class="refresh" onclick="fetchPrices()">Refresh Prices</button>
+    </div>
+
+    <script>
+        async function fetchPrices() {
+    try {
+
+        let response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,dogecoin,cardano&vs_currencies=usd');
+        
+        let data = await response.json();
+        
+        // Data manupilation yapilip sonra data yi frontend e gonderiyoruz.
+        document.getElementById('bitcoin').innerText = `Bitcoin: $${data.bitcoin.usd}`;// Data nesnesinin icindeki. bitcoin nesnesinin icindeki .usd degiskeninin degeri!
+        document.getElementById('ethereum').innerText = `Ethereum: $${data.ethereum.usd}`;
+        document.getElementById('dogecoin').innerText = `Dogecoin: $${data.dogecoin.usd}`;
+        document.getElementById('cardano').innerText = `Cardano: $${data.cardano.usd}`;
+
+         let bitcoinElement = document.getElementById('bitcoin');
+
+        
+       
+       
+
+       if(data.bitcoin.usd >=90000){
+      //  document.body.classList.add("green-background");  
+       bitcoinElement.style.color = 'green';
+       bitcoinElement.style.fontSize = '25px';
+
+       }else{
+        bitcoinElement.style.color = 'red';
+       // document.body.classList.add("red-background"); 
+       }
+
+
+        
+
+
+
+        
+    } catch (error) {
+  
+       console.error('Error fetching prices:', error);
+   
+    }
+
+}
+
+    fetchPrices();
+
+    
+    </script>
+</body>
+</html>
